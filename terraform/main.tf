@@ -43,3 +43,20 @@ resource "google_container_cluster" "gke_cluster" {
 
   remove_default_node_pool = false
 }
+
+resource "google_artifact_registry_repository" "gke_repo" {
+  provider = google
+  location = "us-central1"
+  repository_id = "gke-repo"
+  description   = "Docker repository for GKE cluster app images"
+  format        = "DOCKER"
+
+  labels = {
+    environment = "prod"
+  }
+}
+resource "google_project_iam_member" "gke_node_sa_role" {
+  project = var.project_id
+  role    = "roles/container.nodeServiceAccount"
+  member  = "serviceAccount:${google_service_account.gke_node_sa.email}"
+}
