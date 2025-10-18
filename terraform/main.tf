@@ -41,7 +41,7 @@ resource "google_container_cluster" "gke_cluster" {
     ]
   }
 
-  remove_default_node_pool = false
+  remove_default_node_pool = true
 }
 
 resource "google_container_node_pool" "gpt_nodes" {
@@ -52,7 +52,8 @@ resource "google_container_node_pool" "gpt_nodes" {
   initial_node_count = 1
 
   node_config {
-    machine_type = "e2-medium"
+    machine_type = var.node_machine_type
+    service_account = google_service_account.gke_node_sa.email
     preemptible  = false
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
