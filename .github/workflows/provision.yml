@@ -32,15 +32,15 @@ jobs:
       - name: OpenTofu Init
         working-directory: terraform/
         run: |
-          opentofu init -input=false
+          tofu init -input=false
 
       - name: OpenTofu Plan
         working-directory: terraform/
         run: |
-          opentofu plan -input=false -out=tfplan
+          tofu plan -input=false -out=tfplan
 
       - name: OpenTofu Apply
         if: github.ref == 'refs/heads/main'
         working-directory: terraform/
         run: |
-          opentofu apply -auto-approve -input=false "tfplan"
+          tofu apply -auto-approve -input=false "tfplan"
