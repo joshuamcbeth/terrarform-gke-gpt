@@ -44,6 +44,27 @@ resource "google_container_cluster" "gke_cluster" {
   remove_default_node_pool = false
 }
 
+resource "google_container_node_pool" "gpt_nodes" {
+  name       = "gpt-pool"
+  cluster    = google_container_cluster.gke_cluster.name
+  location   = var.zone
+
+  initial_node_count = 1
+
+  node_config {
+    machine_type = "e2-medium"
+    preemptible  = false
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
+
+  management {
+    auto_upgrade = true
+    auto_repair  = true
+  }
+}
+
 # Enable the Kubernetes Engine API
 resource "google_project_service" "container" {
   project = var.project_id
