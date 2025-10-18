@@ -1,0 +1,5 @@
+fastapi
+uvicorn[standard]
+transformers[torch]  # or [flax] if using JAX
+torch                 # CPU version by default; small models run fine
+pydantic
