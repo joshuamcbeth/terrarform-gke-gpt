@@ -20,6 +20,11 @@ provider "google" {
   zone    = var.zone
 }
 
+resource "google_service_account" "gke_node_sa" {
+  account_id   = "gke-node"
+  display_name = "GKE Node Service Account"
+}
+
 resource "google_container_cluster" "gke_cluster" {
   name     = var.cluster_name
   location = var.zone
@@ -30,6 +35,7 @@ resource "google_container_cluster" "gke_cluster" {
 
   node_config {
     machine_type = var.node_machine_type
+    service_account = google_service_account.gke_node_sa.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
     ]
