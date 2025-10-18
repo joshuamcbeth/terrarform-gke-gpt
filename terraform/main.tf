@@ -44,6 +44,22 @@ resource "google_container_cluster" "gke_cluster" {
   remove_default_node_pool = false
 }
 
+# Enable the Kubernetes Engine API
+resource "google_project_service" "container" {
+  project = var.project_id
+  service = "container.googleapis.com"
+
+  disable_on_destroy = false
+}
+
+# Enable the Cloud Resource Manager API
+resource "google_project_service" "cloudresourcemanager" {
+  project = var.project_id
+  service = "cloudresourcemanager.googleapis.com"
+
+  disable_on_destroy = false
+}
+
 resource "google_artifact_registry_repository" "gke_repo" {
   provider = google
   location = "us-central1"
