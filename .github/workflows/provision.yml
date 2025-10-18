@@ -59,6 +59,7 @@ jobs:
 
       - name: Configure docker for artifact repository
         run: |
+          gcloud components install gke-gcloud-auth-plugin
           gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Build and push gpt service Docker image
