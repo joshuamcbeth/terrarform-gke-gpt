@@ -101,7 +101,7 @@ resource "google_project_iam_member" "gke_node_sa_role" {
 resource "google_artifact_registry_repository_iam_member" "terraform_sa_writer" {
   project    = var.project_id
   location   = "us-central1"
-  repository = "gpt"
+  repository = "gke-repo"
   role       = "roles/artifactregistry.writer"
   member     = "serviceAccount:terraform-gke-gpt-github@${var.project_id}.iam.gserviceaccount.com"
 }
