@@ -31,5 +31,5 @@ variable "node_count" {
 variable "node_machine_type" {
   description = "Machine type for nodes"
   type        = string
-  default     = "e2-micro"
+  default     = "e2-medium"
 }
