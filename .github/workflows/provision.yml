@@ -1,0 +1,46 @@
+name: OpenTofu GKE Provision
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  opentofu:
+    name: OpenTofu Apply for GKE
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /github/workspace/terraform/gcp-key.json
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          version: 1.7.5
+
+      - name: Write GCP key
+        working-directory: terraform/
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+          echo "${GCP_CREDENTIALS}" > "${GOOGLE_APPLICATION_CREDENTIALS}"
+
+      - name: OpenTofu Init
+        working-directory: terraform/
+        run: |
+          opentofu init -input=false
+
+      - name: OpenTofu Plan
+        working-directory: terraform/
+        run: |
+          opentofu plan -input=false -out=tfplan
+
+      - name: OpenTofu Apply
+        if: github.ref == 'refs/heads/main'
+        working-directory: terraform/
+        run: |
+          opentofu apply -auto-approve -input=false "tfplan"
