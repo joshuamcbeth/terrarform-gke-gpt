@@ -42,6 +42,9 @@ jobs:
 
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v3'
+        with:
+          project_id: 'terraform-gke-gpt'
+          install_components: 'gke-gcloud-auth-plugin'
 
       - name: OpenTofu Init
         working-directory: terraform/
