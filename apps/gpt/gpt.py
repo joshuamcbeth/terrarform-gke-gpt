@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-from transformers import pipeline
 import re
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
-# Create pipeline
-generator = pipeline("text-generation", model="distilgpt2")
+tokenizer = AutoTokenizer.from_pretrained("gpt2-medium")
+model = AutoModelForCausalLM.from_pretrained("gpt2-medium")
+generator = pipeline("text-generation", model=model, tokenizer=tokenizer)
+
 app = FastAPI()
 
 class Prompt(BaseModel):
