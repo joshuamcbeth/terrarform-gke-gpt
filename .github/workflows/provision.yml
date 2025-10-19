@@ -72,7 +72,7 @@ jobs:
       - name: Build and push gpt service Docker image
         working-directory: apps/gpt/
         run: |
-          IMAGE="us-central1-docker.pkg.dev/gke-repo/gpt:${{ github.sha }}"
+          IMAGE="us-central1-docker.pkg.dev/terraform-gke-gpt/gke-repo/gpt:${{ github.sha }}"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
           helm upgrade --install gpt ./helm --namespace default --set image.repository="${IMAGE%:*}" --set image.tag="${IMAGE##*:}"
