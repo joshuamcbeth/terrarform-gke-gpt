@@ -79,3 +79,8 @@ jobs:
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
           helm upgrade --install gpt ./helm --namespace default --set image.repository="${IMAGE%:*}" --set image.tag="${IMAGE##*:}"
+
+      - name: Clean up
+        working-directory: terraform/
+        run: |
+          tofu destroy -auto-approve
